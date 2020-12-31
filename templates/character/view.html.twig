@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rick and Morty characters{% endblock %}
+
+{% block body %}
+    <h1>{{ character.name }}</h1>
+
+    <p><a href="{{ path('character_index') }}">Back to list</a></p>
+
+    <img src="{{ character.image }}" />
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Species</th>
+                <td>{{ character.species }}</td>
+            </tr>
+            <tr>
+                <th>Origin</th>
+                <td>{{ character.origin }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Episodes</h2>
+
+    <ul>
+        {% for episode in episodes %}
+            <li>{{ episode.name }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

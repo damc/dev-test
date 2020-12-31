@@ -1,0 +1,19 @@
+version: "2"
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80"
+    volumes_from:
+      - php
+    depends_on:
+      - php
+  php:
+    image: php:latest
+    env_file:
+      - .env
+    entrypoint: bash -c
+    depends_on:
+      - memcached
+  memcached:
+    image: memcached:latest
