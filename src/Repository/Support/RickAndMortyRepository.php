@@ -2,7 +2,6 @@
 
 namespace App\Repository\Support;
 
-use App\Entity\Character;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -39,7 +38,7 @@ abstract class RickAndMortyRepository
     /**
      * @param mixed[mixed] $criteria
      * @param int $page
-     * @return Character[]
+     * @return object[]
      */
     public function findBy(array $criteria, int $page = 1): array
     {
@@ -47,13 +46,13 @@ abstract class RickAndMortyRepository
         $path = static::ENDPOINT . '?' . http_build_query($parameters);
 
         $results = $this->request($path)['results'];
-        $characters = [];
+        $objects = [];
 
         foreach ($results as $result) {
-            $characters[] = $this->mapResultArrayToObject($result);
+            $objects[] = $this->mapResultArrayToObject($result);
         }
 
-        return $characters;
+        return $objects;
     }
 
     public function getTotalPagesBy(array $criteria): int

@@ -20,8 +20,6 @@ class CharacterRepository extends RickAndMortyRepository
         }
         $result['episodeIds'] = $episodeIds;
 
-        /** @var Character $character */
-        $character = Character::fromArray($result);
-        return $character;
+        return Character::fromArray($result);
     }
 }
