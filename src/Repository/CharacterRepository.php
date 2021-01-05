@@ -14,10 +14,12 @@ class CharacterRepository extends RickAndMortyRepository
         $result['origin'] = $result['origin']['name'];
 
         $episodeIds = [];
+
         foreach ($result['episode'] as $episodeUrl) {
             preg_match('/\/(\d+)$/', $episodeUrl, $matches);
             $episodeIds[] = $matches[1];
         }
+        
         $result['episodeIds'] = $episodeIds;
 
         return Character::fromArray($result);

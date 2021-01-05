@@ -21,6 +21,7 @@ class EpisodeRepository extends RickAndMortyRepository
 
         if (count($character->getEpisodeIds()) != 1) {
             $episodes = [];
+
             foreach ($result as $episodeArray) {
                 $episodes[] = $this->mapResultArrayToObject($episodeArray);
             }
