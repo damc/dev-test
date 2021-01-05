@@ -31,7 +31,7 @@ class EpisodeRepository extends RickAndMortyRepository
         return $episodes;
     }
 
-    public function mapResultArrayToObject(array $result): object
+    protected function mapResultArrayToObject(array $result): object
     {
         return Episode::fromArray($result);
     }

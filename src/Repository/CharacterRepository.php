@@ -9,7 +9,7 @@ class CharacterRepository extends RickAndMortyRepository
 {
     protected const ENDPOINT = 'character';
 
-    public function mapResultArrayToObject(array $result): object
+    protected function mapResultArrayToObject(array $result): object
     {
         $result['origin'] = $result['origin']['name'];
 
