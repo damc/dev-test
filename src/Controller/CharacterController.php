@@ -53,6 +53,11 @@ class CharacterController extends AbstractController
     {
         /** @var Character $character */
         $character = $characterRepository->find($id);
+
+        if (is_null($character)) {
+            throw $this->createNotFoundException("Character does not exist.");
+        }
+
         $episodes = $episodeRepository->findByCharacter($character);
 
         return $this->render('character/view.html.twig', [

@@ -27,10 +27,14 @@ abstract class RickAndMortyRepository
         $this->cache = $cache;
     }
 
-    public function find($id): object
+    public function find($id): ?object
     {
         $path = static::ENDPOINT . '/' . $id;
         $result = $this->request($path);
+
+        if (is_null($result)) {
+            return null;
+        }
 
         return $this->mapResultArrayToObject($result);
     }
@@ -45,7 +49,13 @@ abstract class RickAndMortyRepository
         $parameters = array_merge($criteria, ['page' => $page]);
         $path = static::ENDPOINT . '?' . http_build_query($parameters);
 
-        $results = $this->request($path)['results'];
+        $response = $this->request($path);
+
+        if (is_null($response)) {
+            return [];
+        }
+
+        $results = $response['results'];
         $objects = [];
 
         foreach ($results as $result) {
@@ -60,7 +70,13 @@ abstract class RickAndMortyRepository
         $parameters = array_merge($criteria, ['page' => 1]);
         $path = static::ENDPOINT . '?' . http_build_query($parameters);
 
-        return $this->request($path)['info']['pages'];
+        $response = $this->request($path);
+
+        if(is_null($response)) {
+            return 0;
+        }
+
+        return $response['info']['pages'];
     }
 
     /**
@@ -77,14 +93,19 @@ abstract class RickAndMortyRepository
         return $this->getTotalPagesBy([]);
     }
 
-    protected function request(string $path): array
+    protected function request(string $path): ?array
     {
         return $this->cache->get(
             str_replace('/', '.', $path),
-            function (ItemInterface $item) use ($path): array {
+            function (ItemInterface $item) use ($path): ?array {
                 $item->expiresAfter(static::CACHE_TTL);
 
                 $response = $this->client->request('GET', $path);
+
+                if ($response->getStatusCode() == 404) {
+                    return null;
+                }
+
                 return $response->toArray();
             }
         );

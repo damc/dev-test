@@ -7,36 +7,40 @@
 
     {{ form(form) }}
 
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Species</th>
-                <th>Origin</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for character in characters %}
+    {% if characters is not empty %}
+        <table>
+            <thead>
                 <tr>
-                    <td>{{ character.name }}</td>
-                    <td>{{ character.species }}</td>
-                    <td>{{ character.origin }}</td>
-                    <td><a href="{{ path('character_view', {'id': character.id}) }}">View</a></td>
+                    <th>Name</th>
+                    <th>Species</th>
+                    <th>Origin</th>
+                    <th>Actions</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for character in characters %}
+                    <tr>
+                        <td>{{ character.name }}</td>
+                        <td>{{ character.species }}</td>
+                        <td>{{ character.origin }}</td>
+                        <td><a href="{{ path('character_view', {'id': character.id}) }}">View</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-    <p>
-        Page:
-        {% if page > 1 %}
-            <a href="{{ path('character_index', {'page': page - 1}) }}">{{ page - 1 }}</a>
-        {% endif %}
-        {{ page }}
-        {% if page < totalPages - 1 %}
-            <a href="{{ path('character_index', {'page': page + 1}) }}">{{ page + 1 }}</a>
-        {% endif %}
-        out of {{ totalPages }}
-    </p>
+        <p>
+            Page:
+            {% if page > 1 %}
+                <a href="{{ path('character_index', {'page': page - 1}) }}">{{ page - 1 }}</a>
+            {% endif %}
+            {{ page }}
+            {% if page < totalPages - 1 %}
+                <a href="{{ path('character_index', {'page': page + 1}) }}">{{ page + 1 }}</a>
+            {% endif %}
+            out of {{ totalPages }}
+        </p>
+    {% else %}
+        There are no characters that meet the given criteria.
+    {% endif %}
 {% endblock %}
