@@ -67,6 +67,12 @@ abstract class RickAndMortyRepository
 
     public function getTotalPagesBy(array $criteria): int
     {
+        /**
+         * Pass page=1 so that it will use the cached result from
+         * the findBy method. Thanks to this, it will need only one
+         * request to get results and total number of pages if these
+         * methods are called one after the other.
+         */
         $parameters = array_merge($criteria, ['page' => 1]);
         $path = static::ENDPOINT . '?' . http_build_query($parameters);
 
